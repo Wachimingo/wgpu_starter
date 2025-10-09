@@ -5,12 +5,12 @@ pub struct Vertex {
 }
 
 pub const VERTICES: &[Vertex] = &[
-    Vertex { position: [-0.8, -0.8]},
-    Vertex { position: [0.8, -0.8]},
-    Vertex { position: [0.8, 0.8]},
-    Vertex { position: [-0.8, -0.8]},
-    Vertex { position: [0.8, 0.8]},
-    Vertex { position: [-0.8, 0.8]}
+    Vertex { position: [-0.1, -0.1]},
+    Vertex { position: [0.1, -0.1]},
+    Vertex { position: [0.1, 0.1]},
+    Vertex { position: [-0.1, -0.1]},
+    Vertex { position: [0.1, 0.1]},
+    Vertex { position: [-0.1, 0.1]}
 ];
 
 impl Vertex {

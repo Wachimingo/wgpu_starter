@@ -2,7 +2,7 @@ use pollster::FutureExt;
 use wgpu::util::DeviceExt;
 use winit::window::Window;
 
-use crate::logic::{renderer::Renderer, vertex::{Vertex, VERTICES}};
+use crate::logic::{render_pipeline::{create_render_pipeline, RenderPipelineInput}, renderer::Renderer, vertex::{Vertex, VERTICES}};
 
 pub fn init<'a>(window_arc: Window) -> Renderer<'a> {
     let window = std::sync::Arc::new(window_arc);
@@ -45,42 +45,10 @@ pub fn init<'a>(window_arc: Window) -> Renderer<'a> {
         label: Some("Shader"),
         source: wgpu::ShaderSource::Wgsl(include_str!("../shaders/render.wgsl").into())
     });
-    let render_pipeline = device.create_render_pipeline(&wgpu::RenderPipelineDescriptor {
-        label: Some("Render pipeline"),
-        layout: None,
-        vertex: wgpu::VertexState {
-            module: &shader,
-            entry_point: Some("vertexMain"),
-            buffers: &[Vertex::desc()],
-            compilation_options: wgpu::PipelineCompilationOptions::default(),
-        },
-        fragment: Some(wgpu::FragmentState {
-            module: &shader,
-            entry_point: Some("fragmentMain"),
-            targets: &[Some(wgpu::ColorTargetState {
-                format: config.format,
-                blend: Some(wgpu::BlendState::REPLACE),
-                write_mask: wgpu::ColorWrites::ALL,
-            })],
-            compilation_options: wgpu::PipelineCompilationOptions::default(),
-        }),
-        primitive: wgpu::PrimitiveState {
-            topology: wgpu::PrimitiveTopology::TriangleList,
-            strip_index_format: None,
-            front_face: wgpu::FrontFace::Ccw,
-            cull_mode: Some(wgpu::Face::Back),
-            polygon_mode: wgpu::PolygonMode::Fill,
-            unclipped_depth: false,
-            conservative: false,
-        },
-        depth_stencil: None,
-        multisample: wgpu::MultisampleState {
-            count: 1,
-            mask: !0,
-            alpha_to_coverage_enabled: false,
-        },
-        multiview: None,
-        cache: None,
+    let render_pipeline = create_render_pipeline(RenderPipelineInput {
+        device: &device,
+        config: &config,
+        shader: &shader,
     });
     Renderer { window, surface, device, queue, config, size, render_pipeline, vertex_buffer }
 }
