@@ -2,7 +2,7 @@ use winit::{
     window::{Window},
 };
 
-use crate::logic::{new_state::init, vertex::VERTICES};
+use crate::logic::{new_state::init, vertex::Vertex};
 
 pub struct Renderer<'a> {
     pub window: std::sync::Arc<Window>,
@@ -13,6 +13,7 @@ pub struct Renderer<'a> {
     pub size: winit::dpi::PhysicalSize<u32>,
     pub render_pipeline: wgpu::RenderPipeline,
     pub vertex_buffer: wgpu::Buffer,
+    pub vertex: Vec<Vertex>,
 }
 
 impl<'a> Renderer<'a> {
@@ -31,6 +32,7 @@ impl<'a> Renderer<'a> {
         }
     }
     pub fn render(&mut self) -> Result<(), wgpu::SurfaceError> {
+        self.queue.write_buffer(&self.vertex_buffer, 0, bytemuck::cast_slice(&self.vertex));
         let output = self.surface.get_current_texture()?;
         let view = output.texture.create_view(&wgpu::TextureViewDescriptor::default());
         let mut encoder = self.device.create_command_encoder(&wgpu::CommandEncoderDescriptor {
@@ -60,7 +62,7 @@ impl<'a> Renderer<'a> {
             });
             render_pass.set_pipeline(&self.render_pipeline);
             render_pass.set_vertex_buffer(0, self.vertex_buffer.slice(..));
-            render_pass.draw(0..VERTICES.len() as u32, 0..1);
+            render_pass.draw(0..self.vertex.len() as u32, 0..1);
         }
         self.queue.submit(Some(encoder.finish()));
         output.present();

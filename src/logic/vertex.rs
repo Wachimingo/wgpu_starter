@@ -1,17 +1,8 @@
 #[repr(C)]
 #[derive(Copy, Clone, Debug, bytemuck::Pod, bytemuck::Zeroable)]
 pub struct Vertex {
-    position: [f32; 2],
+    pub position: [f32; 2],
 }
-
-pub const VERTICES: &[Vertex] = &[
-    Vertex { position: [-0.1, -0.1]},
-    Vertex { position: [0.1, -0.1]},
-    Vertex { position: [0.1, 0.1]},
-    Vertex { position: [-0.1, -0.1]},
-    Vertex { position: [0.1, 0.1]},
-    Vertex { position: [-0.1, 0.1]}
-];
 
 impl Vertex {
     pub fn desc() -> wgpu::VertexBufferLayout<'static> {

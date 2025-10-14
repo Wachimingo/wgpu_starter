@@ -2,9 +2,19 @@ use pollster::FutureExt;
 use wgpu::util::DeviceExt;
 use winit::window::Window;
 
-use crate::logic::{render_pipeline::{create_render_pipeline, RenderPipelineInput}, renderer::Renderer, vertex::{Vertex, VERTICES}};
+use crate::logic::{render_pipeline::{create_render_pipeline, RenderPipelineInput}, renderer::Renderer, vertex::Vertex};
 
 pub fn init<'a>(window_arc: Window) -> Renderer<'a> {
+    #[rustfmt::skip]
+    let vertex: Vec<Vertex> = vec![
+        Vertex { position: [-0.1, -0.1]},
+        Vertex { position: [0.1, -0.1]},
+        Vertex { position: [0.1, -0.09]},
+        Vertex { position: [-0.1, -0.1]},
+        Vertex { position: [0.1, -0.09]},
+        Vertex { position: [-0.1, -0.09]}
+    ];
+
     let window = std::sync::Arc::new(window_arc);
     let size = window.inner_size();
     let instance = wgpu::Instance::new(&wgpu::InstanceDescriptor {
@@ -38,8 +48,8 @@ pub fn init<'a>(window_arc: Window) -> Renderer<'a> {
     };
     let vertex_buffer = device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
         label: Some("Vertex Buffer"),
-        contents: bytemuck::cast_slice(VERTICES),
-        usage: wgpu::BufferUsages::VERTEX,
+        contents: bytemuck::cast_slice(&vertex),
+        usage: wgpu::BufferUsages::VERTEX | wgpu::BufferUsages::COPY_DST,
     });
     let shader = device.create_shader_module(wgpu::ShaderModuleDescriptor {
         label: Some("Shader"),
@@ -50,5 +60,5 @@ pub fn init<'a>(window_arc: Window) -> Renderer<'a> {
         config: &config,
         shader: &shader,
     });
-    Renderer { window, surface, device, queue, config, size, render_pipeline, vertex_buffer }
+    Renderer { window, surface, device, queue, config, size, render_pipeline, vertex_buffer, vertex }
 }

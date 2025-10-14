@@ -1,8 +1,9 @@
 use winit::{
-    event::{ElementState, MouseButton, WindowEvent},
+    event::{ElementState, KeyEvent, MouseButton, WindowEvent},
     event_loop::ActiveEventLoop,
     window::WindowId,
 };
+use winit::keyboard::{KeyCode, PhysicalKey};
 
 use crate::window::window_state::WindowState;
 
@@ -30,6 +31,38 @@ pub fn window_event(
                     state: ElementState::Pressed,
                     ..
                 } => {}
+                WindowEvent::KeyboardInput {
+                    event:
+                        KeyEvent {
+                            physical_key: PhysicalKey::Code(KeyCode::KeyA),
+                            state: ElementState::Pressed,
+                            ..
+                        },
+                    ..
+                } => {
+                    state.vertex[0].position[0] -= 0.01;
+                    state.vertex[1].position[0] -= 0.01;
+                    state.vertex[2].position[0] -= 0.01;
+                    state.vertex[3].position[0] -= 0.01;
+                    state.vertex[4].position[0] -= 0.01;
+                    state.vertex[5].position[0] -= 0.01;
+                }
+                WindowEvent::KeyboardInput {
+                    event:
+                        KeyEvent {
+                            physical_key: PhysicalKey::Code(KeyCode::KeyD),
+                            state: ElementState::Pressed,
+                            ..
+                        },
+                    ..
+                } => {
+                    state.vertex[0].position[0] += 0.01;
+                    state.vertex[1].position[0] += 0.01;
+                    state.vertex[2].position[0] += 0.01;
+                    state.vertex[3].position[0] += 0.01;
+                    state.vertex[4].position[0] += 0.01;
+                    state.vertex[5].position[0] += 0.01;
+                }
                 _ => {}
             }
         }
