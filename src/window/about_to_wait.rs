@@ -1,6 +1,4 @@
-use winit::{
-    event_loop::{ActiveEventLoop},
-};
+use winit::event_loop::ActiveEventLoop;
 
 use crate::window::window_state::WindowState;
 

@@ -1,9 +1,9 @@
+use winit::keyboard::{KeyCode, PhysicalKey};
 use winit::{
     event::{ElementState, KeyEvent, MouseButton, WindowEvent},
     event_loop::ActiveEventLoop,
     window::WindowId,
 };
-use winit::keyboard::{KeyCode, PhysicalKey};
 
 use crate::window::window_state::WindowState;
 

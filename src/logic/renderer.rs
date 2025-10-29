@@ -1,6 +1,4 @@
-use winit::{
-    window::{Window},
-};
+use winit::window::Window;
 
 use crate::logic::{new_state::init, vertex::Vertex};
 
@@ -18,12 +16,12 @@ pub struct Renderer<'a> {
 
 impl<'a> Renderer<'a> {
     pub fn new(window_arc: Window) -> Self {
-       init(window_arc) 
+        init(window_arc)
     }
-    pub fn window(&self) -> &Window{
+    pub fn window(&self) -> &Window {
         &self.window
     }
-    pub fn resize(&mut self, new_size: winit::dpi::PhysicalSize<u32>){
+    pub fn resize(&mut self, new_size: winit::dpi::PhysicalSize<u32>) {
         if new_size.width > 0 && new_size.height > 0 {
             self.size = new_size;
             self.config.width = new_size.width;
@@ -32,12 +30,17 @@ impl<'a> Renderer<'a> {
         }
     }
     pub fn render(&mut self) -> Result<(), wgpu::SurfaceError> {
-        self.queue.write_buffer(&self.vertex_buffer, 0, bytemuck::cast_slice(&self.vertex));
+        self.queue
+            .write_buffer(&self.vertex_buffer, 0, bytemuck::cast_slice(&self.vertex));
         let output = self.surface.get_current_texture()?;
-        let view = output.texture.create_view(&wgpu::TextureViewDescriptor::default());
-        let mut encoder = self.device.create_command_encoder(&wgpu::CommandEncoderDescriptor {
-            label: Some("Render encoder"),
-        });
+        let view = output
+            .texture
+            .create_view(&wgpu::TextureViewDescriptor::default());
+        let mut encoder = self
+            .device
+            .create_command_encoder(&wgpu::CommandEncoderDescriptor {
+                label: Some("Render encoder"),
+            });
         // RENDER PASS
         {
             let mut render_pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
