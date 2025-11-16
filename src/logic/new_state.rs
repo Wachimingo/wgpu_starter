@@ -2,6 +2,7 @@ use pollster::FutureExt;
 use wgpu::util::DeviceExt;
 use winit::window::Window;
 
+use crate::graphics::ball::Ball;
 use crate::graphics::blocks::{Level, LevelInput};
 use crate::graphics::common_graphic_structs::{Coords, Dimensions, Input};
 use crate::graphics::paddle::Paddle;
@@ -24,16 +25,21 @@ pub fn init<'a>(window_arc: Window) -> Renderer<'a> {
 
     vertex.extend(paddle_1.vertices);
 
+    let ball_1 = Ball::new(Input {
+        id: None,
+        position: Coords { x: 0.0, y: 0.0 },
+        dimensions: Dimensions { width: 0.01, height: 0.01 },
+        offset: Some(vertex.len()),
+    });
+
+    vertex.extend(ball_1.vertices.iter().map(|vertice| Vertex { position: [vertice[0], vertice[1]]}));
+
     let level = Level::generate_level(LevelInput {
         position: Coords { x: -0.9, y: 0.9 },
-        vertex: &vertex,
-        dimensions: Dimensions {
-            width: 2.0,
-            height: 1.0,
-        },
+        vertex: &mut vertex,
         number_of_blocks: 77,
+        block_size: 0.1,
     });
-    level.update_vertex_buffer(&mut vertex);
 
     let window = std::sync::Arc::new(window_arc);
     let size = window.inner_size();
@@ -101,5 +107,7 @@ pub fn init<'a>(window_arc: Window) -> Renderer<'a> {
         render_pipeline,
         vertex_buffer,
         vertex,
+        ball: ball_1,
+        level,
     }
 }

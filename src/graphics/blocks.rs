@@ -7,6 +7,9 @@ pub struct Block {
     pub id: u32,
     pub offset: usize,
     pub vertices: Vec<Vertex>,
+    pub position: Coords,
+    pub dimensions: Dimensions,
+    pub is_active: bool,
 }
 
 impl Block {
@@ -14,6 +17,9 @@ impl Block {
         Block {
             id: input.id.unwrap(),
             offset: input.offset.unwrap(),
+            position: input.position,
+            dimensions: input.dimensions,
+            is_active: true,
             #[rustfmt::skip]
             vertices: vec![
                 Vertex { position: [input.position.x - input.dimensions.width, input.position.y - input.dimensions.height]},
@@ -28,8 +34,6 @@ impl Block {
 }
 
 pub struct Level {
-    pub position: Coords,
-    pub dimensions: Dimensions,
     pub blocks: Vec<Block>,
 }
 
@@ -40,9 +44,9 @@ pub struct Grid {
 
 pub struct LevelInput<'a> {
     pub position: Coords,
-    pub dimensions: Dimensions,
-    pub vertex: &'a [Vertex],
+    pub vertex: &'a mut Vec<Vertex>,
     pub number_of_blocks: u32,
+    pub block_size: f32,
 }
 
 impl Level {
@@ -52,20 +56,20 @@ impl Level {
         let mut j: f32 = 0.0;
         let mut amount: u32 = 0;
         let scale = 0.4;
-        // let size: f32 = input.dimensions.width / input.number_of_blocks as f32 * 1.0;
-        let size: f32 = 0.1;
         while amount < input.number_of_blocks {
-            let x = input.position.x + (i * size);
-            let y = input.position.y - (j * size);
-            blocks.push(self::Block::new(Input {
+            let x = input.position.x + (i * input.block_size);
+            let y = input.position.y - (j * input.block_size);
+            let block = self::Block::new(Input {
                 id: Some(i as u32),
                 offset: Some(input.vertex.len()),
                 position: Coords { x, y },
                 dimensions: Dimensions {
-                    width: size * scale,
-                    height: size * scale,
+                    width: input.block_size * scale,
+                    height: input.block_size * scale,
                 },
-            }));
+            });
+            input.vertex.extend(block.vertices.clone());
+            blocks.push(block);
             i += 1.0;
             if x > 0.9 {
                 j += 1.0;
@@ -74,8 +78,6 @@ impl Level {
             amount += 1;
         }
         Level {
-            position: input.position,
-            dimensions: input.dimensions,
             blocks,
         }
     }

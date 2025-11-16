@@ -1,9 +1,10 @@
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 pub struct Coords {
     pub x: f32,
     pub y: f32,
 }
 
+#[derive(Copy, Clone, Debug)]
 pub struct Dimensions {
     pub width: f32,
     pub height: f32,
