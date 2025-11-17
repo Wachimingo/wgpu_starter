@@ -25,6 +25,13 @@ pub fn init<'a>(window_arc: Window) -> Renderer<'a> {
 
     vertex.extend(paddle_1.vertices);
 
+    let level = Level::generate_level(LevelInput {
+        position: Coords { x: -0.9, y: 0.9 },
+        vertex: &mut vertex,
+        number_of_blocks: 77,
+        block_size: 0.1,
+    });
+
     let ball_1 = Ball::new(Input {
         id: None,
         position: Coords { x: 0.0, y: 0.0 },
@@ -32,14 +39,7 @@ pub fn init<'a>(window_arc: Window) -> Renderer<'a> {
         offset: Some(vertex.len()),
     });
 
-    vertex.extend(ball_1.vertices.iter().map(|vertice| Vertex { position: [vertice[0], vertice[1]]}));
-
-    let level = Level::generate_level(LevelInput {
-        position: Coords { x: -0.9, y: 0.9 },
-        vertex: &mut vertex,
-        number_of_blocks: 77,
-        block_size: 0.1,
-    });
+    vertex.extend(ball_1.vertices.clone());
 
     let window = std::sync::Arc::new(window_arc);
     let size = window.inner_size();

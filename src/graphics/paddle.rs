@@ -10,12 +10,12 @@ impl Paddle {
         Paddle {
             #[rustfmt::skip]
             vertices: vec![
-                Vertex { position: [input.position.x - input.dimensions.width, input.position.y - input.dimensions.height]},
-                Vertex { position: [input.position.x + input.dimensions.width, input.position.y - input.dimensions.height]},
-                Vertex { position: [input.position.x + input.dimensions.width, input.position.y + input.dimensions.height]},
-                Vertex { position: [input.position.x - input.dimensions.width, input.position.y - input.dimensions.height]},
-                Vertex { position: [input.position.x + input.dimensions.width, input.position.y + input.dimensions.height]},
-                Vertex { position: [input.position.x - input.dimensions.width, input.position.y + input.dimensions.height]}
+                Vertex { position: [input.position.x - input.dimensions.width, input.position.y - input.dimensions.height], color: [1.0,1.0,1.0,1.0]},
+                Vertex { position: [input.position.x + input.dimensions.width, input.position.y - input.dimensions.height], color: [1.0,1.0,1.0,1.0]},
+                Vertex { position: [input.position.x + input.dimensions.width, input.position.y + input.dimensions.height], color: [1.0,1.0,1.0,1.0]},
+                Vertex { position: [input.position.x - input.dimensions.width, input.position.y - input.dimensions.height], color: [1.0,1.0,1.0,1.0]},
+                Vertex { position: [input.position.x + input.dimensions.width, input.position.y + input.dimensions.height], color: [1.0,1.0,1.0,1.0]},
+                Vertex { position: [input.position.x - input.dimensions.width, input.position.y + input.dimensions.height], color: [1.0,1.0,1.0,1.0]}
             ],
         }
     }

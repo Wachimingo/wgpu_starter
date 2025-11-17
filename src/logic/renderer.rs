@@ -70,9 +70,6 @@ impl<'a> Renderer<'a> {
         self.queue.submit(Some(encoder.finish()));
         output.present();
 
-        self.queue
-            .write_buffer(&self.vertex_buffer, 0, bytemuck::cast_slice(&self.vertex));
-
         self.ball.update(&self.vertex_buffer, &mut self.level, &self.queue);
 
         Ok(())
