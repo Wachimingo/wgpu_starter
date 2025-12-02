@@ -5,7 +5,7 @@ use winit::window::Window;
 use crate::graphics::ball::Ball;
 use crate::graphics::blocks::{Level, LevelInput};
 use crate::graphics::common_graphic_structs::{Coords, Dimensions, Input};
-use crate::graphics::paddle::Paddle;
+use crate::graphics::paddle::{Paddle, PaddleInput};
 use crate::logic::render_pipeline::{RenderPipelineInput, create_render_pipeline};
 use crate::logic::renderer::Renderer;
 use crate::logic::vertex::Vertex;
@@ -13,17 +13,20 @@ use crate::logic::vertex::Vertex;
 pub fn init<'a>(window_arc: Window) -> Renderer<'a> {
     let mut vertex: Vec<Vertex> = Vec::new();
 
-    let paddle_1 = Paddle::new(Input {
+    let paddle = Paddle::new(PaddleInput {
+        base_input: Input {
         id: None,
         position: Coords { x: 0.0, y: -0.8 },
         dimensions: Dimensions {
             width: 0.1,
-            height: 0.005,
+            height: 0.01,
         },
         offset: None,
+        },
+        movement_speed: 0.03,
     });
 
-    vertex.extend(paddle_1.vertices);
+    vertex.extend(paddle.vertices.clone());
 
     let level = Level::generate_level(LevelInput {
         position: Coords { x: -0.9, y: 0.9 },
@@ -109,5 +112,6 @@ pub fn init<'a>(window_arc: Window) -> Renderer<'a> {
         vertex,
         ball: ball_1,
         level,
+        paddle,
     }
 }

@@ -1,5 +1,5 @@
 use crate::{
-    graphics::common_graphic_structs::{Coords, Dimensions, Input},
+    graphics::common_graphic_structs::{Coords, Dimensions, HasBounds, Input},
     logic::vertex::Vertex,
 };
 
@@ -30,6 +30,15 @@ impl Block {
                 Vertex { position: [input.position.x - input.dimensions.width, input.position.y + input.dimensions.height], color: [1.0,1.0,1.0,1.0]}
             ],
         }
+    }
+}
+
+impl HasBounds for Block {
+    fn position(&self) -> &Coords {
+        &self.position
+    }
+    fn dimensions(&self) -> &Dimensions {
+        &self.dimensions
     }
 }
 

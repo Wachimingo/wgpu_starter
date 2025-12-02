@@ -16,3 +16,8 @@ pub struct Input {
     pub offset: Option<usize>,
     pub id: Option<u32>,
 }
+
+pub trait HasBounds {
+    fn position(&self) -> &Coords;
+    fn dimensions(&self) -> &Dimensions;
+}
