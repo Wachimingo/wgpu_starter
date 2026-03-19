@@ -29,7 +29,7 @@ pub fn init<'a>(window_arc: Window) -> Renderer<'a> {
     vertex.extend(paddle.vertices.clone());
 
     let level = Level::generate_level(LevelInput {
-        position: Coords { x: -0.9, y: 0.9 },
+        position: Coords { x: -0.9, y: 0.7 },
         vertex: &mut vertex,
         number_of_blocks: 77,
         block_size: 0.1,
@@ -38,7 +38,7 @@ pub fn init<'a>(window_arc: Window) -> Renderer<'a> {
     let ball_1 = Ball::new(Input {
         id: None,
         position: Coords { x: 0.0, y: 0.0 },
-        dimensions: Dimensions { width: 0.01, height: 0.01 },
+        dimensions: Dimensions { width: 0.015, height: 0.015 },
         offset: Some(vertex.len()),
     });
 

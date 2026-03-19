@@ -34,12 +34,13 @@ pub fn window_event(
                     event:
                         KeyEvent {
                             physical_key,
-                            state: _,
+                            state: key_state,
+                            repeat: false,
                             ..
                         },
                     ..
                 } => {
-                    handle_keyboard(state, physical_key);
+                    handle_keyboard(state, physical_key, key_state);
                 }
                 _ => {}
             }
