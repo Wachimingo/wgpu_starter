@@ -2,10 +2,6 @@ use pollster::FutureExt;
 use wgpu::util::DeviceExt;
 use winit::window::Window;
 
-use crate::graphics::ball::Ball;
-use crate::graphics::blocks::{Level, LevelInput};
-use crate::graphics::common_graphic_structs::{Coords, Dimensions, Input};
-use crate::graphics::paddle::{Paddle, PaddleInput};
 use crate::logic::render_pipeline::{RenderPipelineInput, create_render_pipeline};
 use crate::logic::renderer::Renderer;
 use crate::logic::vertex::Vertex;
@@ -13,36 +9,7 @@ use crate::logic::vertex::Vertex;
 pub fn init<'a>(window_arc: Window) -> Renderer<'a> {
     let mut vertex: Vec<Vertex> = Vec::new();
 
-    let paddle = Paddle::new(PaddleInput {
-        base_input: Input {
-        id: None,
-        position: Coords { x: 0.0, y: -0.8 },
-        dimensions: Dimensions {
-            width: 0.1,
-            height: 0.01,
-        },
-        offset: None,
-        },
-        movement_speed: 0.03,
-    });
-
-    vertex.extend(paddle.vertices.clone());
-
-    let level = Level::generate_level(LevelInput {
-        position: Coords { x: -0.9, y: 0.7 },
-        vertex: &mut vertex,
-        number_of_blocks: 77,
-        block_size: 0.1,
-    });
-
-    let ball_1 = Ball::new(Input {
-        id: None,
-        position: Coords { x: 0.0, y: 0.0 },
-        dimensions: Dimensions { width: 0.015, height: 0.015 },
-        offset: Some(vertex.len()),
-    });
-
-    vertex.extend(ball_1.vertices.clone());
+    vertex.extend(vec![Vertex { position: [0.0, 0.0], color: [1.0,1.0,1.0,1.0]}]);
 
     let window = std::sync::Arc::new(window_arc);
     let size = window.inner_size();
@@ -110,8 +77,6 @@ pub fn init<'a>(window_arc: Window) -> Renderer<'a> {
         render_pipeline,
         vertex_buffer,
         vertex,
-        ball: ball_1,
-        level,
-        paddle,
     }
 }
+

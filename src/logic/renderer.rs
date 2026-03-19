@@ -1,6 +1,6 @@
 use winit::window::Window;
 
-use crate::{graphics::{ball::Ball, blocks::Level, paddle::Paddle}, logic::{new_state::init, vertex::Vertex}};
+use crate::{logic::{new_state::init, vertex::Vertex}};
 
 pub struct Renderer<'a> {
     pub window: std::sync::Arc<Window>,
@@ -12,9 +12,6 @@ pub struct Renderer<'a> {
     pub render_pipeline: wgpu::RenderPipeline,
     pub vertex_buffer: wgpu::Buffer,
     pub vertex: Vec<Vertex>,
-    pub ball: Ball,
-    pub level: Level,
-    pub paddle: Paddle,
 }
 
 impl<'a> Renderer<'a> {
@@ -70,9 +67,6 @@ impl<'a> Renderer<'a> {
         }
         self.queue.submit(Some(encoder.finish()));
         output.present();
-
-        self.paddle.update(&self.vertex_buffer, &self.queue);
-        self.ball.update(&self.vertex_buffer, &mut self.level, &self.queue, &self.paddle);
 
         Ok(())
     }
